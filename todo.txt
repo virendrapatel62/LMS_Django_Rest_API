@@ -1,1 +1,1 @@
-Root Api View 
+custom persmission - is admin or read only 

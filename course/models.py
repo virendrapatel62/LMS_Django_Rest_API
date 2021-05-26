@@ -1,3 +1,4 @@
+from re import T
 from django.db import models
 import uuid
 # Create your models here.
@@ -5,7 +6,7 @@ import uuid
 
 class Category(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    slug = models.SlugField(null=False)
+    slug = models.SlugField(null=False, unique=True)
     title = models.CharField(max_length=50, null=False)
 
     def __str__(self):
@@ -15,7 +16,7 @@ class Category(models.Model):
 class Course(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     title = models.CharField(max_length=100, null=False)
-    slug = models.SlugField(null=False)
+    slug = models.SlugField(null=False,  unique=True)
     instructor = models.CharField(max_length=100, null=False)
     language = models.CharField(max_length=20, null=False)
     description = models.CharField(max_length=1000, null=True)

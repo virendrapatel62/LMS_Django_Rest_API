@@ -10,27 +10,36 @@ from course.serializers import CategorySerializer, CourseSerializer, TagSerializ
 from rest_framework.parsers import JSONParser
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
-
-
-@api_view(['GET'])
-def test_view(request):
-    response = {
-        'message': 'Api is working.',
-        'url': request.get_full_path()
-    }
-    return Response(response)
+from rest_framework.permissions import IsAdminUser
 
 
 class CategoryViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
+
+
+class CategorySlugDetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminUser]
+    lookup_field = 'slug'
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
 
 class CourseViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = CourseSerializer
+    queryset = Course.objects.all()
+
+
+class CourseSlugDetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminUser]
+    lookup_field = 'slug'
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
 
 
 class TagViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
