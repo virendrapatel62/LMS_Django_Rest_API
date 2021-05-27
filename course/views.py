@@ -28,6 +28,7 @@ class CourseViewSet(ModelViewSet):
     permission_classes = [isAdminUserOrReadOnly]
     serializer_class = CourseSerializer
     search_fields = ['title', 'description', 'tagline', 'slug']
+    ordering_fields = '__all__'
     filterset_fields = ['category', 'slug',
                         'price', 'discount', 'duration', 'title']
     queryset = Course.objects.all()
