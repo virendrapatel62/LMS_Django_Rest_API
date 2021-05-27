@@ -24,7 +24,10 @@ class CategorySlugDetailView(RetrieveUpdateDestroyAPIView):
 
 
 class CourseViewSet(ModelViewSet):
-
+    '''
+    Returns the list of courses , ordering by all fiels, searching by title , description, tagline, slud
+    Sample url : domain.com/api/?tag=javascript&category=04557884-debd-4734-b52b-d47c1278d315&ordering=-title
+    '''
     permission_classes = [isAdminUserOrReadOnly]
     serializer_class = CourseSerializer
     search_fields = ['title', 'description', 'tagline', 'slug']
@@ -32,6 +35,13 @@ class CourseViewSet(ModelViewSet):
     filterset_fields = ['category', 'slug',
                         'price', 'discount', 'duration', 'title']
     queryset = Course.objects.all()
+
+    def get_queryset(self):
+        tag = self.request.query_params.get('tag')
+        if tag is not None:
+            courses = Tag.objects.filter(tag=tag).values_list('course')
+            return Course.objects.filter(pk__in=courses)
+        return super().get_queryset()
 
     def create(self, request, *args, **kwargs):
         course = request.data
