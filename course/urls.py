@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from .views import CategorySlugDetailView, CategoryViewSet, CourseSlugDetailView, CourseViewSet, TagViewSet
+from .views import CategorySlugDetailView, CategoryViewSet,  CourseByCategoryView, CourseSlugDetailView, CourseViewSet, TagViewSet
 from rest_framework.routers import DefaultRouter
 # /api/
 
@@ -21,14 +21,17 @@ tag_router.register('', TagViewSet, basename='tag')
 urlpatterns = [
 
 
-    path('categories/slug/<str:slug>', CategorySlugDetailView.as_view(),
+    path('categories/slug/<str:slug>/', CategorySlugDetailView.as_view(),
          name='category-detail-by-slug'),
+
     path('categories/', include(category_router.urls)),
+    path('categories/<str:category_id>/courses/',
+         CourseByCategoryView.as_view(), name='courses-by-category'),
 
     path('tags/', include(tag_router.urls)),
 
 
-    path('', include(course_router.urls)),
+    path('courses/', include(course_router.urls)),
     path('slug/<str:slug>/', CourseSlugDetailView.as_view(),
          name='course-detail-by-slug'),
 

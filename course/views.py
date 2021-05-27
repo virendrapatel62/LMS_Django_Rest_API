@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from course.models import Category, Course, Tag
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from course.serializers import CategorySerializer, CourseSerializer, TagSerializer
@@ -81,3 +82,13 @@ class TagViewSet(ModelViewSet):
             return Response(TagSerializer(tag).data)
         else:
             return Response(serializer.errors)
+
+
+class CourseByCategoryView(APIView):
+    def get( self, request , category_id):
+        try:
+            courses = Course.objects.filter(category = Category(pk = category_id))
+        except ValidationError :
+            return Response({"course_id" : ["Course Id is Not Valid"]}) 
+        serializer = CourseSerializer(courses , many=True)
+        return Response(serializer.data) 

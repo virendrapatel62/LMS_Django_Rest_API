@@ -9,7 +9,7 @@ urlpatterns = [
 
     path('api/', api_root, name='api_root'),
 
-    path('api/courses/', include(('course.urls', 'course'), namespace='course')),
+    path('api/', include(('course.urls', 'course'), namespace='course')),
 
     path('api/chapters/', include(('chapter.urls', 'chapter'), namespace='chapter')),
     path('api/coupons/', include('coupon.urls')),

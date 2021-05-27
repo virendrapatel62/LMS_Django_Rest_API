@@ -14,6 +14,7 @@ def api_root(request):
             "Course List": reverse('course:course-list', request=request),
             "Course Detail": reverse('course:course-detail', args=[1], request=request),
             "Course Detail By Slug": reverse('course:course-detail-by-slug', args=['course-slug'], request=request),
+            "Courses By Category Id": reverse('course:courses-by-category', args=['course-id'], request=request),
         },
 
         "Tags": {
