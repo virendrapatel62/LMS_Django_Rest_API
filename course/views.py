@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from rest_framework import serializers
 from rest_framework.response import Response
 from course.models import Category, Course, Tag
 from rest_framework.status import HTTP_400_BAD_REQUEST
@@ -63,3 +64,20 @@ class TagViewSet(ModelViewSet):
     permission_classes = [isAdminUserOrReadOnly]
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        tag = request.data
+        course_id = tag.get('course')
+        course = None
+        try:
+            course = Course.objects.get(pk=course_id)
+        except Course.DoesNotExist or ValidationError:
+            return Response({'course': ["course id is invalid"]})
+
+        serializer = TagSerializer(data=tag)
+        if serializer.is_valid():
+            tag = Tag(**serializer.validated_data, course=course)
+            tag.save()
+            return Response(TagSerializer(tag).data)
+        else:
+            return Response(serializer.errors)
