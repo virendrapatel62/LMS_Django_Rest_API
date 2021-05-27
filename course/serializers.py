@@ -21,6 +21,8 @@ class CourseSerializer(ModelSerializer):
 
 
 class TagSerializer(ModelSerializer):
+    course = CourseSerializer(read_only=True)
+
     class Meta:
         model = Tag
         fields = '__all__'

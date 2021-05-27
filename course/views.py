@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from rest_framework.response import Response
 from course.models import Category, Course, Tag
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from course.serializers import CategorySerializer, CourseSerializer, TagSerializer
@@ -20,9 +22,34 @@ class CategorySlugDetailView(RetrieveUpdateDestroyAPIView):
 
 
 class CourseViewSet(ModelViewSet):
+
     permission_classes = [isAdminUserOrReadOnly]
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        course = request.data
+        category_id = course.get('category_id')
+        # course.pop('category_id')
+
+        category = None
+        if category_id is None:
+            return Response({'category_id': ['category_id is required.']})
+
+        try:
+            category = Category.objects.get(pk=category_id)
+        except Category.DoesNotExist or ValidationError:
+            return Response({'category_id': ['category_id is not valid.']})
+
+        serializer = CourseSerializer(data=course)
+        if(serializer.is_valid()):
+            courseInstance = Course(
+                **serializer.validated_data, category=category)
+
+            courseInstance.save()
+            return Response(CourseSerializer(courseInstance).data)
+
+        return Response(serializer.errors)
 
 
 class CourseSlugDetailView(RetrieveUpdateDestroyAPIView):
