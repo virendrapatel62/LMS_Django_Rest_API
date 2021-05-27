@@ -27,22 +27,9 @@ class CourseViewSet(ModelViewSet):
 
     permission_classes = [isAdminUserOrReadOnly]
     serializer_class = CourseSerializer
+    filterset_fields = ['category', 'slug',
+                        'price', 'discount', 'duration', 'title']
     queryset = Course.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        # checking for data
-        category = request.query_params.get('category')
-
-        self.queryset = Course.objects.all()
-        if(category):
-            try:
-                self.queryset = Course.objects.filter(
-                    category=Category(pk=category))
-            except ValidationError:
-                return Response(
-                    {"course_id": ["Course Id is Not Valid"]})
-
-        return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         course = request.data
