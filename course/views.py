@@ -29,6 +29,21 @@ class CourseViewSet(ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
 
+    def list(self, request, *args, **kwargs):
+        # checking for data
+        category = request.query_params.get('category')
+
+        self.queryset = Course.objects.all()
+        if(category):
+            try:
+                self.queryset = Course.objects.filter(
+                    category=Category(pk=category))
+            except ValidationError:
+                return Response(
+                    {"course_id": ["Course Id is Not Valid"]})
+
+        return super().list(request, *args, **kwargs)
+
     def create(self, request, *args, **kwargs):
         course = request.data
         category_id = course.get('category_id')
@@ -85,10 +100,10 @@ class TagViewSet(ModelViewSet):
 
 
 class CourseByCategoryView(APIView):
-    def get( self, request , category_id):
+    def get(self, request, category_id):
         try:
-            courses = Course.objects.filter(category = Category(pk = category_id))
-        except ValidationError :
-            return Response({"course_id" : ["Course Id is Not Valid"]}) 
-        serializer = CourseSerializer(courses , many=True)
-        return Response(serializer.data) 
+            courses = Course.objects.filter(category=Category(pk=category_id))
+        except ValidationError:
+            return Response({"course_id": ["Course Id is Not Valid"]})
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)
