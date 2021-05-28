@@ -50,12 +50,12 @@ class CourseViewSet(ModelViewSet):
 
         category = None
         if category_id is None:
-            return Response({'category_id': ['category_id is required.']})
+            return Response({'category_id': ['category_id is required.']}, status=HTTP_400_BAD_REQUEST)
 
         try:
             category = Category.objects.get(pk=category_id)
         except Category.DoesNotExist or ValidationError:
-            return Response({'category_id': ['category_id is not valid.']})
+            return Response({'category_id': ['category_id is not valid.']}, status=HTTP_400_BAD_REQUEST)
 
         serializer = CourseSerializer(data=course)
         if(serializer.is_valid()):
@@ -65,7 +65,7 @@ class CourseViewSet(ModelViewSet):
             courseInstance.save()
             return Response(CourseSerializer(courseInstance).data)
 
-        return Response(serializer.errors)
+        return Response(serializer.errors,  status=HTTP_400_BAD_REQUEST)
 
 
 class CourseSlugDetailView(RetrieveUpdateDestroyAPIView):
@@ -103,6 +103,6 @@ class CourseByCategoryView(APIView):
         try:
             courses = Course.objects.filter(category=Category(pk=category_id))
         except ValidationError:
-            return Response({"course_id": ["Course Id is Not Valid"]})
+            return Response({"course_id": ["Course Id is Not Valid"]}, status=HTTP_400_BAD_REQUEST)
         serializer = CourseSerializer(courses, many=True)
         return Response(serializer.data)

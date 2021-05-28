@@ -1,3 +1,4 @@
+✅ status code in error response 
 
 ✅ /api/video-platforms 
     - GET

@@ -27,6 +27,9 @@ def api_root(request):
             "Category List": reverse('course:category-list', request=request),
             "Category Detail": reverse('course:category-detail', args=[4], request=request),
             "Category Detail By Slug": reverse('course:category-detail-by-slug', args=['category-slug'], request=request),
+        },
+        "Chapter": {
+            "Chapter Types": reverse('chapter:chapter-type-view', request=request),
         }
 
 
