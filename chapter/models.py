@@ -10,6 +10,12 @@ chapter_choises = (
     ('V', 'VIDEO'),
     ('L', 'LINK')
 )
+chapter_choises_description = (
+    ('T', 'Create your textual lessons in the course. It can also be used to embed iFrame, add HTML code through the Source option'),
+    ('H', 'Define your chapter or section headings.'),
+    ('V', 'All uploaded videos are completely secure and non downloadable. It can also be used to embed youtube and Vimeo videos.'),
+    ('L', 'Add Link which will be embedded in iFrame')
+)
 
 video_plateform_choises = (
     ('Y', 'Youtube'),
