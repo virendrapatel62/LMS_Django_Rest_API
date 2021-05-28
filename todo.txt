@@ -1,1 +1,21 @@
-custom persmission - is admin or read only 
+
+✅ /api/video-platforms 
+    - GET
+    - No-persmission
+
+✅ /api/chapter-types 
+    - GET
+    -No persmission
+
+✅ /api/chapter 
+    - POST 
+    - CUSTOM IMPLEMENTATION
+    - Admin Permission Needed
+
+✅ /api/chapter 
+    - GET 
+    - GET ALL CHAPTERS
+    - Course Filter 
+    - Order by Index
+    - No Permission
+
