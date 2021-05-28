@@ -1,4 +1,3 @@
-✅ status code in error response 
 
 ✅ /api/video-platforms 
     - GET
@@ -18,5 +17,6 @@
     - GET ALL CHAPTERS
     - Course Filter 
     - Order by Index
-    - No Permission
+    (No permission Tem..)
+    - Permission -user who Purchaces Course 
 
