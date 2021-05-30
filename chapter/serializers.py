@@ -5,7 +5,8 @@ from rest_framework.serializers import ModelSerializer
 
 
 class ChapterSerializer(ModelSerializer):
-    index = serializers.IntegerField(required = False)
+    index = serializers.IntegerField(required=False)
+
     class Meta:
         model = Chapter
         fields = '__all__'
