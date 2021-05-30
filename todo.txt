@@ -7,12 +7,12 @@
     - GET
     -No persmission
 
-✅ /api/chapter 
+⏳ /api/chapter 
     - POST 
     - CUSTOM IMPLEMENTATION
     - Admin Permission Needed
 
-✅ /api/chapter 
+⏳ /api/chapter 
     - GET 
     - GET ALL CHAPTERS
     - Course Filter 
@@ -20,3 +20,4 @@
     (No permission Tem..)
     - Permission -user who Purchaces Course 
 
+⏳ Media Files Setup to Serve Thumbnail

@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from chapter.serializers import ChapterSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from chapter.models import chapter_choises, chapter_choises_description, video_plateform_choises
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
+from chapter.models import Chapter, chapter_choises, chapter_choises_description, video_plateform_choises
 # Create your views here.
+from rest_framework.permissions import IsAdminUser
+from core.permissions import isAdminUserOrReadOnly
 
 
 @api_view(['GET'])
@@ -24,3 +27,9 @@ def video_plateform_view(request):
     plateforms = map(lambda e: dict(
         id=e[0], plateform=e[1]), video_plateform_choises)
     return Response(plateforms)
+
+
+class ChapterListCreateView(ListCreateAPIView):
+    permission_classes = [isAdminUserOrReadOnly]
+    queryset = Chapter.objects.all()
+    serializer_class = ChapterSerializer

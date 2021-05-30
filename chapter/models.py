@@ -41,6 +41,13 @@ class LinkChapter(models.Model):
     url = models.URLField(max_length=100)
 
 
+class HeadingChapter(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    lecture = models.OneToOneField(
+        Chapter, on_delete=models.CASCADE, related_name='heading_chapter')
+    title = models.CharField(max_length=30)
+
+
 class TextChapter(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     lecture = models.OneToOneField(
