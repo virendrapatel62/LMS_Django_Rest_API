@@ -1,6 +1,8 @@
+import rest_framework
 from chapter.serializers import ChapterSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
 from chapter.models import Chapter, chapter_choises, chapter_choises_description, video_plateform_choises
 # Create your views here.
@@ -33,3 +35,10 @@ class ChapterListCreateView(ListCreateAPIView):
     permission_classes = [isAdminUserOrReadOnly]
     queryset = Chapter.objects.all()
     serializer_class = ChapterSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        if self.request.method == 'POST':
+            request = self.request
+            return self.serializer_class(data=request.data, context={"request":  request})
+
+        return self.serializer_class(self.queryset.all(), many=True)
