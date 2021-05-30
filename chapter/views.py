@@ -1,4 +1,5 @@
 import rest_framework
+from rest_framework import serializers
 from chapter.serializers import ChapterSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -39,6 +40,10 @@ class ChapterListCreateView(ListCreateAPIView):
     def get_serializer(self, *args, **kwargs):
         if self.request.method == 'POST':
             request = self.request
-            return self.serializer_class(data=request.data, context={"request":  request})
+            print(request.data)
+            serializer = self.serializer_class(
+                data=request.data, context={"request":  request})
+            serializer.is_valid()
+            return serializer
 
         return self.serializer_class(self.queryset.all(), many=True)

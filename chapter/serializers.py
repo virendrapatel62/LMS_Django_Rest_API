@@ -45,17 +45,20 @@ class ChapterSerializer(ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        print('********************')
-        print('inside create method')
-        print('validated_data :', validated_data)
-        print("request.data : ", self.context.get('request').data)
         data = self.context.get('request').data
         chapter_type = data.get('chapter_type')
+
         if(chapter_type == 'H'):
             self.handleHeadingChapter(data)
 
         if(chapter_type == 'T'):
             self.handleTextChapter(data)
+
+        if(chapter_type == 'L'):
+            self.handleLinkChapter(data)
+
+        if(chapter_type == 'V'):
+            self.handleVideoChapter(data)
 
         return Chapter()
 
@@ -88,3 +91,33 @@ class ChapterSerializer(ModelSerializer):
         else:
             raise ValidationError(
                 {"text_chapter": text_chapter_serializer.errors})
+
+    def handleLinkChapter(self, raw_json):
+        link_chapter_raw = raw_json.get('link_chapter')
+        if not link_chapter_raw:
+            raise ValidationError(
+                {"link_chapter": ["link_chapter is required"]})
+
+        link_chapter_serializer = LinkChapterSerializer(
+            data=link_chapter_raw)
+
+        if link_chapter_serializer.is_valid():
+            print(link_chapter_serializer.validated_data)
+        else:
+            raise ValidationError(
+                {"link_chapter": link_chapter_serializer.errors})
+
+    def handleVideoChapter(self, raw_json):
+        video_chapter_raw = raw_json.get('video_chapter')
+        if not video_chapter_raw:
+            raise ValidationError(
+                {"video_chapter": ["video_chapter is required"]})
+
+        video_chapter_serializer = VideoChapterSerializer(
+            data=video_chapter_raw)
+
+        if video_chapter_serializer.is_valid():
+            print(video_chapter_serializer.validated_data)
+        else:
+            raise ValidationError(
+                {"video_chapter": video_chapter_serializer.errors})
