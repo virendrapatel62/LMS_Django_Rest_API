@@ -29,8 +29,8 @@ class Chapter(models.Model):
         Course, on_delete=models.CASCADE, related_name='chapters')
     chapter_type = models.CharField(choices=chapter_choises, max_length=2)
     index = models.IntegerField(null=False)
-    parent_chapter = models.ForeignKey(
-        'Chapter', on_delete=models.CASCADE, related_name='child_chapters')
+    parent_chapter = models.ForeignKey('Chapter', null=True, blank=True,
+                                       on_delete=models.CASCADE, related_name='child_chapters')
 
 
 class LinkChapter(models.Model):

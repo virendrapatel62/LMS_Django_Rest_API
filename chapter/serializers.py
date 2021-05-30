@@ -1,9 +1,11 @@
 from django.db.models import fields
+from rest_framework import serializers
 from chapter.models import Chapter, TextChapter, VideoChapter, LinkChapter, HeadingChapter
 from rest_framework.serializers import ModelSerializer
 
 
 class ChapterSerializer(ModelSerializer):
+    index = serializers.IntegerField(required = False)
     class Meta:
         model = Chapter
         fields = '__all__'
