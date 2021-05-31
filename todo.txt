@@ -21,3 +21,6 @@
     - Permission -user who Purchaces Course 
 
 ⏳ Media Files Setup to Serve Thumbnail
+
+
+Draw Index Lecture 

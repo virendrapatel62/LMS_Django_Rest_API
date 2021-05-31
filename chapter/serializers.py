@@ -60,7 +60,20 @@ class ChapterSerializer(ModelSerializer):
         if(chapter_type == 'V'):
             self.handleVideoChapter(data)
 
-        return Chapter()
+        print("validated Data : CHapter Data", validated_data)
+
+        chapter = Chapter(**validated_data)
+        course = chapter.course
+
+        if(chapter.parent_chapter is None):
+            last_index_parent_chapter = Chapter.objects.filter(
+                course=course, parent_chapter=None).count()
+            chapter.index = last_index_parent_chapter + 1
+        else:
+            # find index of child chapter
+            pass
+
+        return chapter
 
     def handleHeadingChapter(self, raw_json):
         heading_chapter_raw = raw_json.get('heading_chapter')
