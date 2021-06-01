@@ -12,6 +12,11 @@ class TextChapterSerializer(ModelSerializer):
         model = TextChapter
         fields = '__all__'
 
+    def to_representation(self, instance):
+        orignal_object = super().to_representation(instance)
+        orignal_object.pop('chapter')
+        return orignal_object
+
 
 class HeadingChapterSerializer(ModelSerializer):
     chapter = serializers.UUIDField(required=False)
@@ -19,6 +24,11 @@ class HeadingChapterSerializer(ModelSerializer):
     class Meta:
         model = HeadingChapter
         fields = '__all__'
+
+    def to_representation(self, instance):
+        orignal_object = super().to_representation(instance)
+        orignal_object.pop('chapter')
+        return orignal_object
 
 
 class VideoChapterSerializer(ModelSerializer):
@@ -28,6 +38,11 @@ class VideoChapterSerializer(ModelSerializer):
         model = VideoChapter
         fields = '__all__'
 
+    def to_representation(self, instance):
+        orignal_object = super().to_representation(instance)
+        orignal_object.pop('chapter')
+        return orignal_object
+
 
 class LinkChapterSerializer(ModelSerializer):
     chapter = serializers.UUIDField(required=False)
@@ -36,9 +51,18 @@ class LinkChapterSerializer(ModelSerializer):
         model = LinkChapter
         fields = '__all__'
 
+    def to_representation(self, instance):
+        orignal_object = super().to_representation(instance)
+        orignal_object.pop('chapter')
+        return orignal_object
+
 
 class ChapterSerializer(ModelSerializer):
     index = serializers.IntegerField(required=False)
+    heading_chapter = HeadingChapterSerializer(read_only=True)
+    link_chapter = LinkChapterSerializer(read_only=True)
+    video_chapter = VideoChapterSerializer(read_only=True)
+    text_chapter = TextChapterSerializer(read_only=True)
 
     class Meta:
         model = Chapter
