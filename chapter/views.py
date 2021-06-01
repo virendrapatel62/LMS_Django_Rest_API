@@ -37,6 +37,9 @@ class ChapterListCreateView(ListCreateAPIView):
     queryset = Chapter.objects.all()
     serializer_class = ChapterSerializer
 
+    def get_queryset(self):
+        return Chapter.objects.filter(parent_chapter=None)
+
     def get_serializer(self, *args, **kwargs):
         if self.request.method == 'POST':
             request = self.request
@@ -46,4 +49,4 @@ class ChapterListCreateView(ListCreateAPIView):
             serializer.is_valid()
             return serializer
 
-        return self.serializer_class(self.queryset.all(), many=True)
+        return self.serializer_class(self.get_queryset(), many=True)

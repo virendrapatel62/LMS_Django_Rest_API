@@ -88,6 +88,7 @@ class ChapterSerializer(ModelSerializer):
         print("validated Data : CHapter Data", validated_data)
 
         chapter = Chapter(**validated_data)
+        parent_chapter = validated_data.get('parent_chapter')
         course = chapter.course
 
         if(chapter.parent_chapter is None):
@@ -99,7 +100,12 @@ class ChapterSerializer(ModelSerializer):
             chapter_type_object.save()
         else:
             # find index of child chapter
-            pass
+            totalChilds = Chapter.objects.filter(
+                parent_chapter=parent_chapter).count()
+            chapter.index = totalChilds+1
+            chapter.save()
+            chapter_type_object.chapter = chapter
+            chapter_type_object.save()
 
         return chapter
 
