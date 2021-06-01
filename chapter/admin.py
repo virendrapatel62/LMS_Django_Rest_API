@@ -2,7 +2,7 @@ from chapter.forms import TextChapterForm, VideoChapterForm
 from typing import Text
 from django.contrib import admin
 from django.db.models import fields
-from chapter.models import Chapter, LinkChapter, TextChapter, VideoChapter
+from chapter.models import Chapter, LinkChapter, TextChapter, VideoChapter, HeadingChapter
 # Register your models here.
 
 
@@ -16,5 +16,6 @@ class VideoChapterAdminModel(admin.ModelAdmin):
 
 admin.site.register(Chapter)
 admin.site.register(LinkChapter)
+admin.site.register(HeadingChapter)
 admin.site.register(TextChapter, TextChapterAdminModel)
 admin.site.register(VideoChapter, VideoChapterAdminModel)

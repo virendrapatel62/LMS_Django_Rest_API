@@ -6,7 +6,7 @@ from rest_framework.serializers import ModelSerializer
 
 
 class TextChapterSerializer(ModelSerializer):
-    lecture = serializers.UUIDField(required=False)
+    chapter = serializers.UUIDField(required=False)
 
     class Meta:
         model = TextChapter
@@ -14,7 +14,7 @@ class TextChapterSerializer(ModelSerializer):
 
 
 class HeadingChapterSerializer(ModelSerializer):
-    lecture = serializers.UUIDField(required=False)
+    chapter = serializers.UUIDField(required=False)
 
     class Meta:
         model = HeadingChapter
@@ -22,7 +22,7 @@ class HeadingChapterSerializer(ModelSerializer):
 
 
 class VideoChapterSerializer(ModelSerializer):
-    lecture = serializers.UUIDField(required=False)
+    chapter = serializers.UUIDField(required=False)
 
     class Meta:
         model = VideoChapter
@@ -30,7 +30,7 @@ class VideoChapterSerializer(ModelSerializer):
 
 
 class LinkChapterSerializer(ModelSerializer):
-    lecture = serializers.UUIDField(required=False)
+    chapter = serializers.UUIDField(required=False)
 
     class Meta:
         model = LinkChapter
@@ -47,18 +47,19 @@ class ChapterSerializer(ModelSerializer):
     def create(self, validated_data):
         data = self.context.get('request').data
         chapter_type = data.get('chapter_type')
+        chapter_type_object = None
 
         if(chapter_type == 'H'):
-            self.handleHeadingChapter(data)
+            chapter_type_object = self.handleHeadingChapter(data)
 
         if(chapter_type == 'T'):
-            self.handleTextChapter(data)
+            chapter_type_object = self.handleTextChapter(data)
 
         if(chapter_type == 'L'):
-            self.handleLinkChapter(data)
+            chapter_type_object = self.handleLinkChapter(data)
 
         if(chapter_type == 'V'):
-            self.handleVideoChapter(data)
+            chapter_type_object = self.handleVideoChapter(data)
 
         print("validated Data : CHapter Data", validated_data)
 
@@ -69,6 +70,9 @@ class ChapterSerializer(ModelSerializer):
             last_index_parent_chapter = Chapter.objects.filter(
                 course=course, parent_chapter=None).count()
             chapter.index = last_index_parent_chapter + 1
+            chapter.save()
+            chapter_type_object.chapter = chapter
+            chapter_type_object.save()
         else:
             # find index of child chapter
             pass
@@ -85,7 +89,7 @@ class ChapterSerializer(ModelSerializer):
             data=heading_chapter_raw)
 
         if header_chapter_serializer.is_valid():
-            print(header_chapter_serializer.validated_data)
+            return HeadingChapter(**header_chapter_serializer._validated_data)
         else:
             raise ValidationError(
                 {"heading_chapter": header_chapter_serializer.errors})
@@ -100,7 +104,7 @@ class ChapterSerializer(ModelSerializer):
             data=text_chapter_raw)
 
         if text_chapter_serializer.is_valid():
-            print(text_chapter_serializer.validated_data)
+            return TextChapter(**text_chapter_serializer._validated_data)
         else:
             raise ValidationError(
                 {"text_chapter": text_chapter_serializer.errors})
@@ -115,7 +119,7 @@ class ChapterSerializer(ModelSerializer):
             data=link_chapter_raw)
 
         if link_chapter_serializer.is_valid():
-            print(link_chapter_serializer.validated_data)
+            return LinkChapter(**link_chapter_serializer._validated_data)
         else:
             raise ValidationError(
                 {"link_chapter": link_chapter_serializer.errors})
@@ -130,7 +134,7 @@ class ChapterSerializer(ModelSerializer):
             data=video_chapter_raw)
 
         if video_chapter_serializer.is_valid():
-            print(video_chapter_serializer.validated_data)
+            return VideoChapter(**video_chapter_serializer._validated_data)
         else:
             raise ValidationError(
                 {"video_chapter": video_chapter_serializer.errors})

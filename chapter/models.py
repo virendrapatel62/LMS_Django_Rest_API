@@ -35,7 +35,7 @@ class Chapter(models.Model):
 
 class LinkChapter(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    lecture = models.OneToOneField(
+    chapter = models.OneToOneField(
         Chapter, on_delete=models.CASCADE, related_name='link_chapter')
     title = models.CharField(max_length=30)
     url = models.URLField(max_length=100)
@@ -43,14 +43,14 @@ class LinkChapter(models.Model):
 
 class HeadingChapter(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    lecture = models.OneToOneField(
+    chapter = models.OneToOneField(
         Chapter, on_delete=models.CASCADE, related_name='heading_chapter')
     title = models.CharField(max_length=30)
 
 
 class TextChapter(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    lecture = models.OneToOneField(
+    chapter = models.OneToOneField(
         Chapter, on_delete=models.CASCADE, related_name='text_chapter')
     title = models.CharField(max_length=30)
     content = models.CharField(max_length=10000)
@@ -58,7 +58,7 @@ class TextChapter(models.Model):
 
 class VideoChapter(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    lecture = models.OneToOneField(
+    chapter = models.OneToOneField(
         Chapter, on_delete=models.CASCADE, related_name='video_chapter')
     title = models.CharField(max_length=30)
     video_id = models.CharField(max_length=30, unique=False)
