@@ -22,5 +22,5 @@
 
 ⏳ Media Files Setup to Serve Thumbnail
 
-
-Draw Index Lecture 
+class ChapterListView(ListAPIView):
+    # we wiil add persmission only user who purched this course 

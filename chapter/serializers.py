@@ -1,4 +1,7 @@
+from django.core.exceptions import EmptyResultSet
 from django.db.models import fields
+from django.utils import tree
+from django.utils.functional import empty
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from chapter.models import Chapter, TextChapter, VideoChapter, LinkChapter, HeadingChapter
@@ -57,12 +60,37 @@ class LinkChapterSerializer(ModelSerializer):
         return orignal_object
 
 
+class ChildChapterSerializer(ModelSerializer):
+    index = serializers.IntegerField(required=False)
+    heading_chapter = HeadingChapterSerializer(read_only=True)
+    link_chapter = LinkChapterSerializer(read_only=True)
+    video_chapter = VideoChapterSerializer(read_only=True)
+    text_chapter = TextChapterSerializer(read_only=True)
+
+    class Meta:
+        model = Chapter
+        fields = '__all__'
+
+
+class ChildChapterSerializer(ModelSerializer):
+    index = serializers.IntegerField(required=False)
+    heading_chapter = HeadingChapterSerializer(read_only=True)
+    link_chapter = LinkChapterSerializer(read_only=True)
+    video_chapter = VideoChapterSerializer(read_only=True)
+    text_chapter = TextChapterSerializer(read_only=True)
+
+    class Meta:
+        model = Chapter
+        fields = '__all__'
+
+
 class ChapterSerializer(ModelSerializer):
     index = serializers.IntegerField(required=False)
     heading_chapter = HeadingChapterSerializer(read_only=True)
     link_chapter = LinkChapterSerializer(read_only=True)
     video_chapter = VideoChapterSerializer(read_only=True)
     text_chapter = TextChapterSerializer(read_only=True)
+    child_chapters = ChildChapterSerializer(read_only=True, many=True)
 
     class Meta:
         model = Chapter

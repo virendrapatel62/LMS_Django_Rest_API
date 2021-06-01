@@ -31,7 +31,7 @@ def api_root(request):
         "Chapter": {
             "Chapter Types": reverse('chapter:chapter-type-view', request=request),
             "Video Plateform List": reverse('chapter:video-plateform-listview', request=request),
-            "Chapter List": reverse('chapter:chapter-listview', request=request),
+            "Chapter CReate": reverse('chapter:createview', request=request),
         }
 
 

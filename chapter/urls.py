@@ -1,4 +1,4 @@
-from chapter.views import ChapterListCreateView, chapter_types_view, video_plateform_view
+from chapter.views import ChapterCreateView, ChapterListView, chapter_types_view, video_plateform_view
 from django.contrib import admin
 from django.urls import path
 # base url : api/chapters/
@@ -9,8 +9,10 @@ urlpatterns = [
          name='video-plateform-listview'),
 
 
-    path('', ChapterListCreateView.as_view(),
-         name='chapter-listview'),
+    path('', ChapterCreateView.as_view(),
+         name='chapter-createview'),
+    path('course/<str:course>', ChapterListView.as_view(),
+         name='chapter-createview'),
 
 
 ]
