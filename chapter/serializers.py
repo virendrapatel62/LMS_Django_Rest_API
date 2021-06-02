@@ -90,11 +90,17 @@ class ChapterSerializer(ModelSerializer):
     link_chapter = LinkChapterSerializer(read_only=True)
     video_chapter = VideoChapterSerializer(read_only=True)
     text_chapter = TextChapterSerializer(read_only=True)
-    child_chapters = ChildChapterSerializer(read_only=True, many=True)
+    child_chapters = serializers.SerializerMethodField()
 
     class Meta:
         model = Chapter
         fields = '__all__'
+
+    def get_child_chapters(self, instance):
+        childs = instance.child_chapters.all().order_by('index')
+        serialzer = ChildChapterSerializer(childs, many=True)
+        print("get _ childs", )
+        return serialzer.data
 
     def create(self, validated_data):
         data = self.context.get('request').data

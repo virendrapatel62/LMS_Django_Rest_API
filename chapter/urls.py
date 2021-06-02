@@ -12,7 +12,7 @@ urlpatterns = [
     path('', ChapterCreateView.as_view(),
          name='chapter-createview'),
     path('course/<str:course>', ChapterListView.as_view(),
-         name='chapter-createview'),
+         name='chapter-listview'),
 
 
 ]

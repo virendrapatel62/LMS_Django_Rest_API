@@ -36,6 +36,7 @@ class ChapterListView(ListAPIView):
     # we wiil add persmission only user who purched this course
     queryset = Chapter.objects.all()
     serializer_class = ChapterSerializer
+    ordering = ['index']
 
     def get(self, request, *args, **kwargs):
         try:
