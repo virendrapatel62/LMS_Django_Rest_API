@@ -12,7 +12,7 @@ urlpatterns = [
     path('api/', include(('course.urls', 'course'), namespace='course')),
 
     path('api/chapters/', include(('chapter.urls', 'chapter'), namespace='chapter')),
-    path('api/coupons/', include('coupon.urls')),
+    path('api/coupons/', include(('coupon.urls', 'coupon'), namespace='coupon')),
     path('api/doubts/', include('doubt.urls')),
     path('api/orders/', include('order.urls')),
     path('api/reviews/', include('review.urls')),

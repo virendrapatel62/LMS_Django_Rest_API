@@ -33,6 +33,11 @@ def api_root(request):
             "Video Plateform List": reverse('chapter:video-plateform-listview', request=request),
             "Chapter CReate": reverse('chapter:chapter-createview', request=request),
             "Chapter By Course": reverse('chapter:chapter-listview', args=['course-id'],  request=request),
+        },
+        "Coupon": {
+            "Coupon List": reverse('coupon:coupon-list', request=request),
+            "Coupon Detail": reverse('coupon:coupon-detail', args=['pk'],  request=request),
+            "Coupon By Code": reverse('coupon:coupon-by-code', args=['course_id', 'code'],  request=request),
         }
 
 

@@ -34,14 +34,14 @@ class CourseViewSet(ModelViewSet):
     ordering_fields = '__all__'
     filterset_fields = ['category', 'slug',
                         'price', 'discount', 'duration', 'title']
-    queryset = Course.objects.all()
+    queryset = Course.objects.filter(active=True)
 
     def get_queryset(self):
         tag = self.request.query_params.get('tag')
         if tag is not None:
             courses = Tag.objects.filter(tag=tag).values_list('course')
-            return Course.objects.filter(pk__in=courses)
-        return super().get_queryset()
+            return self.queryset.filter(pk__in=courses)
+        return self.queryset
 
     def create(self, request, *args, **kwargs):
         course = request.data

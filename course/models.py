@@ -22,6 +22,7 @@ class Course(models.Model):
     description = models.CharField(max_length=1000, null=True)
     tagline = models.CharField(max_length=100, null=True)
     price = models.IntegerField(null=False)
+    active = models.BooleanField(default=False)
     discount = models.IntegerField(default=0, null=False)
     duration = models.IntegerField(null=False)
     category = models.ForeignKey(

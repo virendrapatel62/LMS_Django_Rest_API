@@ -7,20 +7,30 @@
     - GET
     -No persmission
 
-⏳ /api/chapter 
+✅ /api/chapter 
     - POST 
     - CUSTOM IMPLEMENTATION
     - Admin Permission Needed
 
-⏳ /api/chapter 
-    - GET 
-    - GET ALL CHAPTERS
-    - Course Filter 
-    - Order by Index
+✅ Coupon Code Api GET POST
+    ✅ Active Field in Model 
+    ✅ GET By Coupon Code Only
+    ✅ Dont Serve All - For User 
+    ✅ Server All For Admin 
+    ✅ POST - Admin 
+    ✅ UPDATE - Admin 
+    ✅ DELETE - Admin 
+
+
+✅ /api/chapter 
+    ✅ GET 
+    ✅GET ALL CHAPTERS
+    ✅Course Filter 
+    ✅Order by Index
     (No permission Tem..)
-    - Permission -user who Purchaces Course 
+    ⏳- Permission -user who Purchaces Course 
+
+
 
 ⏳ Media Files Setup to Serve Thumbnail
-
-class ChapterListView(ListAPIView):
-    # we wiil add persmission only user who purched this course 
+⏳ Only User can get Chapter list who made payment 
