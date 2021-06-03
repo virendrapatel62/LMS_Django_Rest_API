@@ -9,15 +9,22 @@ from coupon.models import Coupon
 from rest_framework.serializers import ModelSerializer, CharField, UUIDField, Serializer
 
 
+def validateCouponCode(code):
+    try:
+        coupon = Coupon.objects.get(code=code)
+    except Coupon.DoesNotExist:
+        raise serializers.ValidationError("Coupon is not valid")
+
+
 class OrderCreateSerializer(Serializer):
     courses = serializers.PrimaryKeyRelatedField(
         queryset=Course.objects.all(), many=True, required=False)
     course = serializers.PrimaryKeyRelatedField(
         queryset=Course.objects.all(), required=False)
-    coupon = serializers.CharField(required=False)
+    coupon = serializers.CharField(
+        required=False, validators=[validateCouponCode])
 
     def validate(self, attrs):
-
         error = ValidationError(
             {
                 "course": "course or courses any one is required at a time.",
@@ -27,16 +34,9 @@ class OrderCreateSerializer(Serializer):
         data = dict(attrs)
         courses = data.get('courses')
         course = data.get('course')
-        coupon_code = data.get('coupon')
 
         if (course and courses) or (not course and not courses):
             raise error
-
-        if coupon_code:
-            try:
-                coupon = Coupon.objects.get(code=coupon_code)
-            except Coupon.DoesNotExist:
-                raise ValidationError({"coupon": "Coupon is not valid"})
 
         return super().validate(attrs)
 
