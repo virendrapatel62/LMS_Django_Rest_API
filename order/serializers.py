@@ -41,19 +41,20 @@ class OrderCreateSerializer(Serializer):
         return super().validate(attrs)
 
 
+class OrderItemSerializer(ModelSerializer):
+    class Meta:
+        model = models.OrderItem
+        fields = '__all__'
+
+
 class OrderSerializer(ModelSerializer):
     order_id = CharField(max_length=30, required=False)
     user = UserSerializer(read_only=True)
     coupon = CouponSerializer(read_only=True)
+    order_items = OrderItemSerializer(read_only=True, many=True)
 
     class Meta:
         model = models.Order
-        fields = '__all__'
-
-
-class OrderItemSerializer(ModelSerializer):
-    class Meta:
-        model = models.OrderItem
         fields = '__all__'
 
 

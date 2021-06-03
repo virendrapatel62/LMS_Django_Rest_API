@@ -1,0 +1,53 @@
+{
+    "id": "6d02280b-a050-42e5-b233-357e1d49f02a",
+    "order_id": "order_HIf4EyobBFXx0z",
+    "user": {
+        "id": 1,
+        "password": "pbkdf2_sha256$260000$LnbChEd4ECkh9UA0KjUBxE$647/N36KIAIbIi/e9D/my6wn0DAcPJPHMIsz3H8kk3c=",
+        "last_login": "2021-06-02T13:16:56.774775Z",
+        "is_superuser": true,
+        "username": "virendra",
+        "first_name": "",
+        "last_name": "",
+        "email": "virendra@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2021-05-24T10:17:28.748744Z",
+        "groups": [],
+        "user_permissions": []
+    },
+    "coupon": null,
+    "order_items": [
+        {
+            "id": "17cec70c-2b32-4f83-b32b-782c7d05f08b",
+            "price": 999,
+            "discount": 0,
+            "time": "2021-06-03T17:00:19.945084Z",
+            "course": "f0690677-a6f1-4fae-a83f-296e0ccb5186",
+            "order": "6d02280b-a050-42e5-b233-357e1d49f02a",
+            "coupon": null
+        },
+        {
+            "id": "2b3bca94-4cdc-4649-a051-63feec6f8c16",
+            "price": 999,
+            "discount": 0,
+            "time": "2021-06-03T17:00:19.940344Z",
+            "course": "5026bd54-cb03-4803-9e8c-7eef374e6c71",
+            "order": "6d02280b-a050-42e5-b233-357e1d49f02a",
+            "coupon": null
+        }
+    ],
+    "payment_id": null,
+    "order_status": "I",
+    "time": "2021-06-03T17:00:19.925212Z"
+}
+// Payment Response 
+{
+    "razorpay_payment_id": "pay_HIfAJIUYzbh2NG",
+    "razorpay_order_id": "order_HIf4EyobBFXx0z",
+    "razorpay_signature": "99f420df47433ac3222e485c783ee8701134a28808e30bc57662184272176384",
+    "org_logo": "",
+    "org_name": "Razorpay Software Private Ltd",
+    "checkout_logo": "https://cdn.razorpay.com/logo.png",
+    "custom_branding": false
+}

@@ -34,3 +34,4 @@
 
 ⏳ Media Files Setup to Serve Thumbnail
 ⏳ Only User can get Chapter list who made payment 
+⏳ isEnrolled Field in Course List 

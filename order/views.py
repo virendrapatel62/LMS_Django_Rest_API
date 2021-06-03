@@ -10,6 +10,7 @@ from order.serializers import OrderCreateSerializer, OrderItemSerializer, OrderS
 from rest_framework.permissions import IsAuthenticated
 from coupon.models import Coupon
 from shortuuid import ShortUUID
+from order.models import Order, OrderItem
 KEY = "rzp_test_pSBqMZhMIjiLvk"
 SECRET = "LSv5qER66R1ZA1niFvkRWSHf"
 
@@ -35,6 +36,7 @@ class CreateOrderApiView(APIView):
         print("------- Post Request --------")
         data = JSONParser().parse(request)
         serializer = OrderCreateSerializer(data=data)
+        user = request.user
         if serializer.is_valid():
             data = serializer.validated_data
             course = data.get('course')
@@ -60,6 +62,14 @@ class CreateOrderApiView(APIView):
             rp_order = self.createRazorPayOrder(
                 request.user, after_discount_total_price)
 
-            return Response(rp_order)
+            order = Order(order_id=rp_order.get('id'), user=user)
+            order.save()
+
+            for course in courses:
+                order_item = OrderItem(
+                    course=course, order=order, price=course.price, discount=course.discount)
+                order_item.save()
+            orderSerializer = OrderSerializer(order)
+            return Response(orderSerializer.data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -7,7 +7,8 @@ import uuid
 
 ORDER_STATUS_CHOICES = (
     ("S", "SUCCESS"),
-    ("F", "FAIL")
+    ("F", "FAIL"),
+    ("I", "INITIATED")
 )
 
 
@@ -16,7 +17,7 @@ class Order(models.Model):
     order_id = models.CharField(max_length=100, null=False)
     payment_id = models.CharField(max_length=100, null=True)
     order_status = models.CharField(
-        max_length=2, default="F", choices=ORDER_STATUS_CHOICES)
+        max_length=2, default="I", choices=ORDER_STATUS_CHOICES)
 
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='orders')
