@@ -40,6 +40,11 @@ def api_root(request):
             "Coupon By Code": reverse('coupon:coupon-by-code', args=['course_id', 'code'],  request=request),
         }
 
+        , 
+        "Orders": {
+            "CReate Order" : reverse("order:order-create" , request=request)
+        }
+
 
     }
     return Response(response)

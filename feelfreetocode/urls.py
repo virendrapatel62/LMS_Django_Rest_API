@@ -14,7 +14,7 @@ urlpatterns = [
     path('api/chapters/', include(('chapter.urls', 'chapter'), namespace='chapter')),
     path('api/coupons/', include(('coupon.urls', 'coupon'), namespace='coupon')),
     path('api/doubts/', include('doubt.urls')),
-    path('api/orders/', include('order.urls')),
+    path('api/orders/', include(('order.urls', 'order'), namespace='order')),
     path('api/reviews/', include('review.urls')),
 
 ]
