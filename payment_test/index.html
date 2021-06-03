@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <br>
+    <br>
+    <input type="text" id="orderid">
+    <br>
+    <br>
+    <button id="rzp-button1">Pay</button>
+
+    <br><br>
+
+    <h4 id="success"></h4>
+</body>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    var orderId
+
+    function createPayment() {
+        var options = {
+            "key": "rzp_test_pSBqMZhMIjiLvk",
+            "name": "Feel Free To Code ",
+            "description": "Angular COurse Payment",
+            "image": "https://www.feelfreetocode.com/logo.png?v=2",
+            "order_id": orderId,
+
+            "handler": function (response) {
+                document.getElementById('success')
+                    .textContent = JSON.stringify(response)
+                console.log(response.razorpay_payment_id);
+                console.log(response.razorpay_order_id);
+                console.log(response.razorpay_signature)
+            },
+        }
+
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            console.log(response.error.code);
+            console.log(response.error.description);
+            console.log(response.error.source);
+            console.log(response.error.step);
+            console.log(response.error.reason);
+            console.log(response.error.metadata.order_id);
+            console.log(response.error.metadata.payment_id);
+        });
+        rzp1.open();
+    }
+
+    document.getElementById('rzp-button1').onclick = function (e) {
+        orderId = document.getElementById('orderid').value.trim()
+        console.log(orderId);
+        if (!orderId) {
+            alert("Provide Order Id")
+            return
+        }
+        createPayment()
+        e.preventDefault();
+    }
+</script>
+
+</html>
