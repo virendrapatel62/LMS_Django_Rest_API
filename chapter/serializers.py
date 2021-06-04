@@ -8,6 +8,26 @@ from chapter.models import Chapter, TextChapter, VideoChapter, LinkChapter, Head
 from rest_framework.serializers import ModelSerializer
 
 
+def changeChapterData(instance):
+    chapter_type = instance.chapter_type
+
+    if(chapter_type == 'T'):
+        tch = instance.text_chapter
+        instance.text_chapter = TextChapter(title=tch.title, id=tch.id)
+
+    if(chapter_type == 'L'):
+        chapter = instance.link_chapter
+        instance.link_chapter = LinkChapter(
+            id=chapter.id, title=chapter.title)
+
+    if(chapter_type == 'V'):
+        chapter = instance.video_chapter
+        instance.video_chapter = VideoChapter(
+            id=chapter.id, title=chapter.title)
+
+    return instance
+
+
 class TextChapterSerializer(ModelSerializer):
     chapter = serializers.UUIDField(required=False)
 
@@ -41,19 +61,6 @@ class VideoChapterSerializer(ModelSerializer):
         model = VideoChapter
         fields = '__all__'
 
-    def to_representation(self, instance):
-        orignal_object = super().to_representation(instance)
-        if(not instance.chapter.is_preview):
-            title = orignal_object.get('title')
-            id = orignal_object.get('id')
-            data = {
-                "title": title,
-                "id": id
-            }
-        else:
-            data = orignal_object
-        return data
-
 
 class LinkChapterSerializer(ModelSerializer):
     chapter = serializers.UUIDField(required=False)
@@ -79,17 +86,9 @@ class ChildChapterSerializer(ModelSerializer):
         model = Chapter
         fields = '__all__'
 
-
-class ChildChapterSerializer(ModelSerializer):
-    index = serializers.IntegerField(required=False)
-    heading_chapter = HeadingChapterSerializer(read_only=True)
-    link_chapter = LinkChapterSerializer(read_only=True)
-    video_chapter = VideoChapterSerializer(read_only=True)
-    text_chapter = TextChapterSerializer(read_only=True)
-
-    class Meta:
-        model = Chapter
-        fields = '__all__'
+    def to_representation(self, instance):
+        instance = changeChapterData(instance)
+        return super().to_representation(instance)
 
 
 class ChapterSerializer(ModelSerializer):
@@ -103,6 +102,10 @@ class ChapterSerializer(ModelSerializer):
     class Meta:
         model = Chapter
         fields = '__all__'
+
+    def to_representation(self, instance):
+        instance = changeChapterData(instance)
+        return super().to_representation(instance)
 
     def get_child_chapters(self, instance):
         childs = instance.child_chapters.all().order_by('index')
