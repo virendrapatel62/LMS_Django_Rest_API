@@ -25,6 +25,7 @@ video_plateform_choises = (
 
 class Chapter(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    is_preview = models.BooleanField(default=False)
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE, related_name='chapters')
     chapter_type = models.CharField(choices=chapter_choises, max_length=2)

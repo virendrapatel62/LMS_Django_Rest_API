@@ -43,8 +43,16 @@ class VideoChapterSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         orignal_object = super().to_representation(instance)
-        orignal_object.pop('chapter')
-        return orignal_object
+        if(not instance.chapter.is_preview):
+            title = orignal_object.get('title')
+            id = orignal_object.get('id')
+            data = {
+                "title": title,
+                "id": id
+            }
+        else:
+            data = orignal_object
+        return data
 
 
 class LinkChapterSerializer(ModelSerializer):
