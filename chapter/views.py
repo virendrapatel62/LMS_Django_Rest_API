@@ -82,6 +82,7 @@ class ChapterDetailView(APIView):
             return Response(status=404)
         #  user subscribed this course
         # then alwaays return full ojject data
+        # add full flag in create Chapter View
         context = {
             "full": chapter.is_preview
         }
