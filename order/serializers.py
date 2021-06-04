@@ -1,5 +1,7 @@
+from django.db.models import fields
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.utils import field_mapping
 from core.serializers import UserSerializer
 from coupon.serializers import CouponSerializer
 from django.db.models.base import Model
@@ -39,6 +41,12 @@ class OrderCreateSerializer(Serializer):
             raise error
 
         return super().validate(attrs)
+
+
+class OrderVerifyDataSerializer(Serializer):
+    razorpay_payment_id = serializers.CharField()
+    razorpay_order_id = serializers.CharField()
+    razorpay_signature = serializers.CharField()
 
 
 class OrderItemSerializer(ModelSerializer):

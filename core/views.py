@@ -38,11 +38,10 @@ def api_root(request):
             "Coupon List": reverse('coupon:coupon-list', request=request),
             "Coupon Detail": reverse('coupon:coupon-detail', args=['pk'],  request=request),
             "Coupon By Code": reverse('coupon:coupon-by-code', args=['course_id', 'code'],  request=request),
-        }
-
-        , 
+        },
         "Orders": {
-            "CReate Order" : reverse("order:order-create" , request=request)
+            "CReate Order": reverse("order:order-create", request=request),
+            "Verify Order": reverse("order:order-verify", request=request),
         }
 
 

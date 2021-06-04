@@ -41,7 +41,9 @@
     "order_status": "I",
     "time": "2021-06-03T17:00:19.925212Z"
 }
-// Payment Response 
+
+
+
 {
     "razorpay_payment_id": "pay_HIfAJIUYzbh2NG",
     "razorpay_order_id": "order_HIf4EyobBFXx0z",

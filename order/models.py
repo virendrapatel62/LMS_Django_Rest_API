@@ -1,8 +1,13 @@
+from re import sub
 from django.db import models
 from django.contrib.auth.models import User
 from coupon.models import Coupon
 from course.models import Course
 import uuid
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+
 # Create your models here.
 
 ORDER_STATUS_CHOICES = (
@@ -24,6 +29,28 @@ class Order(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     coupon = models.ForeignKey(
         Coupon, on_delete=models.CASCADE, related_name="orders", null=True, blank=True)
+
+
+@receiver(post_save, sender=Order)
+def createSubscription(sender, instance, **kwargs):
+    order = instance
+    if order.order_status != "S":
+        return
+    order_items = order.order_items.all()
+    order_items_courses = order.order_items.all().values_list('course')
+
+    for course in order_items_courses:
+        course_pk = course[0]
+        existingSubscription = None
+        try:
+            existingSubscription = Subscription.objects.get(
+                user=order.user, course=Course(pk=course_pk))
+        except Subscription.DoesNotExist:
+            pass
+        if existingSubscription is None:
+            subscription = Subscription(user=order.user, order=order,
+                                        course=Course(pk=course_pk))
+            subscription.save()
 
 
 class OrderItem(models.Model):
@@ -48,3 +75,6 @@ class Subscription(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='subscriptions')
     time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username} - {self.course.title}'
