@@ -87,7 +87,9 @@ class ChildChapterSerializer(ModelSerializer):
         fields = '__all__'
 
     def to_representation(self, instance):
-        instance = changeChapterData(instance)
+        full = self.context.get("full")
+        if not full:
+            instance = changeChapterData(instance)
         return super().to_representation(instance)
 
 
@@ -104,7 +106,9 @@ class ChapterSerializer(ModelSerializer):
         fields = '__all__'
 
     def to_representation(self, instance):
-        instance = changeChapterData(instance)
+        full = self.context.get("full")
+        if not full:
+            instance = changeChapterData(instance)
         return super().to_representation(instance)
 
     def get_child_chapters(self, instance):

@@ -1,3 +1,6 @@
+from rest_framework.exceptions import ValidationError
+from rest_framework.serializers import Serializer
+from rest_framework.views import APIView
 from course.models import Course
 from chapter.serializers import ChapterSerializer
 from rest_framework.decorators import api_view
@@ -68,3 +71,19 @@ class ChapterCreateView(CreateAPIView):
             data=request.data, context={"request":  request})
         serializer.is_valid()
         return serializer
+
+
+class ChapterDetailView(APIView):
+    def get(self, request, **kargs):
+        chapter_id = kargs.get('pk')
+        try:
+            chapter = Chapter.objects.get(pk=chapter_id)
+        except Chapter.DoesNotExist or ValidationError:
+            return Response(status=404)
+        #  user subscribed this course
+        # then alwaays return full ojject data
+        context = {
+            "full": chapter.is_preview
+        }
+        serailizer = ChapterSerializer(chapter, context=context)
+        return Response(serailizer.data)
