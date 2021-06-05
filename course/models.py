@@ -40,6 +40,10 @@ class Course(models.Model):
             return False
         return Subscription.objects.filter(course=self, user=user).count() > 0
 
+    def get_student_enrolled_count(self):
+        from order.models import Subscription
+        return Subscription.objects.filter(course=self).count()
+
 
 class Tag(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)

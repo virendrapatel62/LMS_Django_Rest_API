@@ -14,10 +14,14 @@ class CategorySerializer(ModelSerializer):
 
 class CourseSerializer(ModelSerializer):
     category = CategorySerializer(read_only=True)
+    student_enrolled = serializers.SerializerMethodField()
 
     class Meta:
         model = Course
         fields = '__all__'
+
+    def get_student_enrolled(self, instance):
+        return instance.get_student_enrolled_count()
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
