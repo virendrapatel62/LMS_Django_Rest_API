@@ -1,3 +1,4 @@
+from re import sub
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
@@ -69,7 +70,7 @@ class ChapterCreateView(CreateAPIView):
         request = self.request
         print(request.data)
         serializer = self.serializer_class(
-            data=request.data, context={"request":  request , "full" : True})
+            data=request.data, context={"request":  request, "full": True})
         serializer.is_valid()
         return serializer
 
@@ -89,17 +90,11 @@ class ChapterDetailView(APIView):
             "full": chapter.is_preview
         }
 
-        try:
-            if user.is_authenticated:
-                if (user.is_superuser):
-                    context['full'] = True
-                else:
-                    subscription = Subscription.objects.get(
-                        user=user, course=chapter.course)
-                    context['full'] = True
-
-        except Subscription.DoesNotExist:
-            pass
+        if user.is_authenticated:
+            if (user.is_superuser):
+                context['full'] = True
+            else:
+                context['full'] = chapter.course.is_user_enrolled(user)
 
         serailizer = ChapterSerializer(chapter, context=context)
         return Response(serailizer.data)

@@ -1,3 +1,4 @@
+
 from re import T
 from django.db import models
 import uuid
@@ -32,6 +33,10 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+    def is_user_enrolled(self, user):
+        from order.models import Subscription
+        return Subscription.objects.filter(course=self, user=user).count() > 0
 
 
 class Tag(models.Model):
