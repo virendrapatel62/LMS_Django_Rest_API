@@ -12,6 +12,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from core.permissions import isAdminUserOrReadOnly
 import uuid
+from order.models import Subscription
 
 
 @api_view(['GET'])
@@ -68,7 +69,7 @@ class ChapterCreateView(CreateAPIView):
         request = self.request
         print(request.data)
         serializer = self.serializer_class(
-            data=request.data, context={"request":  request})
+            data=request.data, context={"request":  request , "full" : True})
         serializer.is_valid()
         return serializer
 
@@ -76,6 +77,7 @@ class ChapterCreateView(CreateAPIView):
 class ChapterDetailView(APIView):
     def get(self, request, **kargs):
         chapter_id = kargs.get('pk')
+        user = request.user
         try:
             chapter = Chapter.objects.get(pk=chapter_id)
         except Chapter.DoesNotExist or ValidationError:
@@ -86,5 +88,18 @@ class ChapterDetailView(APIView):
         context = {
             "full": chapter.is_preview
         }
+
+        try:
+            if user.is_authenticated:
+                if (user.is_superuser):
+                    context['full'] = True
+                else:
+                    subscription = Subscription.objects.get(
+                        user=user, course=chapter.course)
+                    context['full'] = True
+
+        except Subscription.DoesNotExist:
+            pass
+
         serailizer = ChapterSerializer(chapter, context=context)
         return Response(serailizer.data)

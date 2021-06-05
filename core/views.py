@@ -31,7 +31,8 @@ def api_root(request):
         "Chapter": {
             "Chapter Types": reverse('chapter:chapter-type-view', request=request),
             "Video Plateform List": reverse('chapter:video-plateform-listview', request=request),
-            "Chapter CReate": reverse('chapter:chapter-createview', request=request),
+            "Chapter Create": reverse('chapter:chapter-createview', request=request),
+            "Chapter Detail": reverse('chapter:chapter-detailview', args=['chapter_id'],  request=request),
             "Chapter By Course": reverse('chapter:chapter-listview', args=['course-id'],  request=request),
         },
         "Coupon": {
