@@ -19,6 +19,11 @@ class CourseSerializer(ModelSerializer):
         model = Course
         fields = '__all__'
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['is_enrolled'] = False
+        return data
+
 
 class TagSerializer(ModelSerializer):
     course = CourseSerializer(read_only=True)
