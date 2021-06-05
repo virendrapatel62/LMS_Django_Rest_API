@@ -21,7 +21,11 @@ class CourseSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['is_enrolled'] = False
+
+        request = self.context.get('request')
+        user = request.user
+        course = instance
+        data['is_enrolled'] = course.is_user_enrolled(user)
         return data
 
 

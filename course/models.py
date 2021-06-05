@@ -36,6 +36,8 @@ class Course(models.Model):
 
     def is_user_enrolled(self, user):
         from order.models import Subscription
+        if not user.is_authenticated:
+            return False
         return Subscription.objects.filter(course=self, user=user).count() > 0
 
 

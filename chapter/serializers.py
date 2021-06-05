@@ -88,9 +88,15 @@ class ChildChapterSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         full = self.context.get("full")
+        print("FULL IN CHILD", full)
         if not full:
             instance = changeChapterData(instance)
-        return super().to_representation(instance)
+
+        data = super().to_representation(instance)
+        course = instance.course
+        user = self.context.get('request').user
+        data['is_enrolled'] = course.is_user_enrolled(user)
+        return data
 
 
 class ChapterSerializer(ModelSerializer):
@@ -109,11 +115,17 @@ class ChapterSerializer(ModelSerializer):
         full = self.context.get("full")
         if not full:
             instance = changeChapterData(instance)
-        return super().to_representation(instance)
+
+        data = super().to_representation(instance)
+        course = instance.course
+        user = self.context.get('request').user
+        data['is_enrolled'] = course.is_user_enrolled(user)
+        return data
 
     def get_child_chapters(self, instance):
         childs = instance.child_chapters.all().order_by('index')
-        serialzer = ChildChapterSerializer(childs, many=True)
+        serialzer = ChildChapterSerializer(
+            childs, many=True, context=self.context)
         print("get _ childs", )
         return serialzer.data
 

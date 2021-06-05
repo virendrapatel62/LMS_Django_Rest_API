@@ -87,7 +87,8 @@ class ChapterDetailView(APIView):
         # then alwaays return full ojject data
         # add full flag in create Chapter View
         context = {
-            "full": chapter.is_preview
+            "full": chapter.is_preview,
+            "request": request
         }
 
         if user.is_authenticated:

@@ -36,6 +36,11 @@ class CourseViewSet(ModelViewSet):
                         'price', 'discount', 'duration', 'title']
     queryset = Course.objects.filter(active=True)
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+
+        return context
+
     def get_queryset(self):
         tag = self.request.query_params.get('tag')
         if tag is not None:

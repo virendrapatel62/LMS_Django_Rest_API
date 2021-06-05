@@ -2,6 +2,13 @@ from django.contrib import admin
 from .models import Course, Category, Tag
 # Register your models here.
 
+
+class CourseAdminModel(admin.ModelAdmin):
+    model = Course
+    list_editable = ['active']
+    list_display = ['title', 'active']
+
+
 admin.site.register(Category)
-admin.site.register(Course)
+admin.site.register(Course, CourseAdminModel)
 admin.site.register(Tag)
