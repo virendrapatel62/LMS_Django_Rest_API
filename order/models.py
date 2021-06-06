@@ -27,8 +27,6 @@ class Order(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='orders')
     time = models.DateTimeField(auto_now_add=True)
-    coupon = models.ForeignKey(
-        Coupon, on_delete=models.CASCADE, related_name="orders", null=True, blank=True)
 
 
 @receiver(post_save, sender=Order)

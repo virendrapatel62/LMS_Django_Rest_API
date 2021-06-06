@@ -18,6 +18,9 @@ class Coupon(models.Model):
     code = models.CharField(max_length=6,
                             null=False, default=random_code)
 
+    def __str__(self):
+        return self.code
+
     @classmethod
     def is_valid(cls, course, code):
         return Coupon.objects.filter(course=course, code=code, active=True).count() > 0

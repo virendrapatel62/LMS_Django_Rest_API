@@ -90,6 +90,11 @@ class CreateOrderApiView(APIView):
             for course in courses:
                 order_item = OrderItem(
                     course=course, order=order, price=course.price, discount=course.discount)
+                if coupon_code is not None:
+                    coupon = Coupon.objects.filter(
+                        code=coupon_code,  course=course)[0]
+                    order_item.coupon = coupon
+                    order_item.discount = coupon.discount
                 order_item.save()
             orderSerializer = OrderSerializer(order)
             return Response(orderSerializer.data)
