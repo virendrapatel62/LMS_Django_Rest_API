@@ -12,9 +12,8 @@ from rest_framework.serializers import ModelSerializer, CharField, UUIDField, Se
 
 
 def validateCouponCode(code):
-    try:
-        coupon = Coupon.objects.get(code=code)
-    except Coupon.DoesNotExist:
+    count = Coupon.objects.filter(code=code).count()
+    if count == 0:
         raise serializers.ValidationError("Coupon is not valid")
 
 

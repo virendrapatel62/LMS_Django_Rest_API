@@ -44,6 +44,7 @@ class CreateOrderApiView(APIView):
             data = serializer.validated_data
             course = data.get('course')
             body_courses = data.get('courses')
+            coupon_code = data.get('coupon')
             courses = []
             if course:
                 courses = [course]
@@ -51,12 +52,30 @@ class CreateOrderApiView(APIView):
             if body_courses:
                 courses = body_courses
 
+            if coupon_code is not None:
+                is_coupon_aplicable = True
+                for course in courses:
+                    is_valid = Coupon.is_valid(course, coupon_code)
+                    is_coupon_aplicable = is_coupon_aplicable and is_valid
+                if not is_coupon_aplicable:
+                    return Response({
+                        "coupon": ["coupon is not valid for provided course or courses"]
+                    }, status=400)
+
             total_price = 0
             after_discount_total_price = 0
+
             for course in courses:
                 total_price += course.price
-                sell_price = course.price - (course.price *
-                                             course.discount * 0.01)
+                if not coupon_code:
+                    sell_price = course.price - (course.price *
+                                                 course.discount * 0.01)
+                else:
+                    coupon = Coupon.objects.get(
+                        code=coupon_code, course=course)
+                    coupon_discount = coupon.discount
+                    sell_price = course.price - (course.price *
+                                                 coupon_discount * 0.01)
                 after_discount_total_price += sell_price
 
             print('TOTAL PRICE : ', total_price)
@@ -104,7 +123,6 @@ class VerifyOrderApiView(APIView):
                 order.payment_id = payment_id
                 order.save()
 
-                
             except:
                 traceback.print_exc()
                 return Response({"order": "order is not valid"},  status=status.HTTP_400_BAD_REQUEST)
