@@ -32,7 +32,7 @@ urlpatterns = [
 
 
     path('courses/', include(course_router.urls)),
-    path('slug/<str:slug>/', CourseSlugDetailView.as_view(),
+    path('courses/slug/<str:slug>/', CourseSlugDetailView.as_view(),
          name='course-detail-by-slug'),
 
 
