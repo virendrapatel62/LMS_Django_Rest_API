@@ -1,4 +1,4 @@
-from order.views import CreateOrderApiView, SubscriptionListView, VerifyOrderApiView
+from order.views import CourseSubscribedByUser, CreateOrderApiView, SubscriptionListView, VerifyOrderApiView
 from django.contrib import admin
 from django.urls import path
 
@@ -10,5 +10,7 @@ Orderurls = [
 
 # /api/subscriptions/
 subscriptionUrls = [
-    path('', SubscriptionListView.as_view(), name='subscription-list')
+    path('', SubscriptionListView.as_view(), name='subscription-list'),
+    path('user/<int:pk>', CourseSubscribedByUser.as_view(),
+         name='subscription-list-of-user')
 ]

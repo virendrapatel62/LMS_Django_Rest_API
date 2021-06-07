@@ -1,3 +1,4 @@
+from course.serializers import CourseSerializer
 import razorpay
 from django.shortcuts import render
 from django.views.decorators.csrf import requires_csrf_token
@@ -8,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from order.serializers import OrderCreateSerializer, OrderItemSerializer, OrderSerializer, OrderVerifyDataSerializer, SubscriptionSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from coupon.models import Coupon
 from shortuuid import ShortUUID
 from course.models import Course
@@ -142,3 +143,26 @@ class VerifyOrderApiView(APIView):
 class SubscriptionListView(ListAPIView):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
+    permission_classes = [IsAdminUser]
+    filterset_fields = '__all__'
+
+
+class CourseSubscribedByUser(ListAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        user = request.user
+        courses = Subscription.objects.filter(
+            user=self.kwargs.get('pk')).values_list('course')
+
+        self.queryset = Course.objects.filter(pk__in=courses)
+
+        if not user.is_superuser:
+            if pk != user.pk:
+                return Response({
+                    "detail": "You are not autorized."
+                },  status=403)
+
+        return super().get(request, *args, **kwargs)

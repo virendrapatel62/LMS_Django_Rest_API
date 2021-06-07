@@ -47,6 +47,11 @@ def api_root(request):
         },
         "Subscriptions": {
             "List": reverse("subscription:subscription-list", request=request),
+            "SUbscribed Courses Of Users": reverse("subscription:subscription-list-of-user", args=['1'],  request=request),
+        },
+        "Review": {
+            "List": reverse("review:review-list", request=request),
+            "Detail": reverse("review:review-detail", request=request),
         }
 
 

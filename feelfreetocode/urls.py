@@ -18,6 +18,6 @@ urlpatterns = [
     path('api/orders/', include((Orderurls, 'order'), namespace='order')),
     path('api/subscriptions/',
          include((subscriptionUrls, 'order'), namespace='subscription')),
-    path('api/reviews/', include('review.urls')),
+    path('api/reviews/', include(('review.urls', 'review'), namespace='review')),
 
 ]

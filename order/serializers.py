@@ -1,4 +1,6 @@
+from course.serializers import CourseSerializer
 from django.db.models import fields
+from core.serializers import UserSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.utils import field_mapping
@@ -66,6 +68,14 @@ class OrderSerializer(ModelSerializer):
 
 
 class SubscriptionSerializer(ModelSerializer):
+    course = CourseSerializer(read_only=True)
+    order = OrderSerializer(read_only=True)
+
     class Meta:
         model = models.Subscription
         fields = '__all__'
+
+    def to_representation(self, instance):
+        json = super().to_representation(instance)
+        json.pop('user')
+        return json
