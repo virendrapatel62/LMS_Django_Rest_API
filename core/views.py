@@ -1,3 +1,4 @@
+from order.models import Subscription
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -43,6 +44,9 @@ def api_root(request):
         "Orders": {
             "CReate Order": reverse("order:order-create", request=request),
             "Verify Order": reverse("order:order-verify", request=request),
+        },
+        "Subscriptions": {
+            "List": reverse("subscription:subscription-list", request=request),
         }
 
 

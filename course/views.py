@@ -112,5 +112,6 @@ class CourseByCategoryView(APIView):
             courses = Course.objects.filter(category=Category(pk=category_id))
         except ValidationError:
             return Response({"course_id": ["Course Id is Not Valid"]}, status=HTTP_400_BAD_REQUEST)
-        serializer = CourseSerializer(courses, many=True)
+        serializer = CourseSerializer(
+            courses, many=True, context={"request": request})
         return Response(serializer.data)

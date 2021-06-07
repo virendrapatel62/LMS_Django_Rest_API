@@ -2,6 +2,7 @@ import razorpay
 from django.shortcuts import render
 from django.views.decorators.csrf import requires_csrf_token
 from rest_framework.decorators import api_view
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
@@ -136,3 +137,8 @@ class VerifyOrderApiView(APIView):
 
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SubscriptionListView(ListAPIView):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer
