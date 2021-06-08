@@ -1,3 +1,4 @@
+import re
 from course.models import Course
 from rest_framework.exceptions import ValidationError
 from review.serializer import ReviewSerializer
@@ -24,32 +25,43 @@ class CanAddOwnReview(BasePermission):
         return super().has_permission(request, view)
 
 
-class CanAddReviewOnEnrolledCourseOnly(BasePermission):
+class CanAddOrUpdateReviewOnEnrolledCourseOnly(BasePermission):
     def has_permission(self, request, view):
+        method = request.method
+        if method in ['PUT', 'POST']:
+            user = request.user
+            course_pk = request.data.get('course')
 
-        if request.method == "GET":
-            return True
+            if method == 'POST':
+                message = {
+                    "course": "Cant add review in this course , you are not enrolled."}
 
-        user = request.user
-        course_pk = request.data.get('course')
+            if method == 'PUT':
+                message = {
+                    "course": "Cant update review in this course , you are not enrolled."}
 
-        if request.method == 'POST':
-            message = {
-                "course": "Cant add review in this course , you are not enrolled."}
+            if user.subscriptions.filter(course=Course(pk=course_pk)).count() == 0:
+                raise ValidationError(
+                    message
+                )
+        return True
 
-        if request.method == 'PUT':
-            message = {
-                "course": "Cant update review in this course , you are not enrolled."}
 
-        if user.subscriptions.filter(course=Course(pk=course_pk)).count() == 0:
-            raise ValidationError(
-                message
-            )
-        return super().has_permission(request, view)
+class CanDeleteOwnReview(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'DELETE':
+            review_pk = view.kwargs.get('pk')
+            if Review.objects.filter(pk=review_pk, user=request.user).count() == 0:
+                raise ValidationError(
+                    {'details': 'you are not authorized to delete tis review'})
+
+        return True
 
 
 class ReviewViewSet(ModelViewSet):
-    permission_classes = [CanAddOwnReview, CanAddReviewOnEnrolledCourseOnly]
+
+    permission_classes = [CanAddOwnReview,
+                          CanAddOrUpdateReviewOnEnrolledCourseOnly, CanDeleteOwnReview]
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
