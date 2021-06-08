@@ -1,4 +1,4 @@
-import re
+
 from course.models import Course
 from rest_framework.exceptions import ValidationError
 from review.serializer import ReviewSerializer
@@ -9,7 +9,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import BasePermission
-# Create your views here.
 
 
 class CanAddOwnReview(BasePermission):
