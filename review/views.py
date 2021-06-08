@@ -5,13 +5,14 @@ from review.serializer import ReviewSerializer
 from rest_framework.utils import serializer_helpers
 from review.models import Review
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, IsAuthenticated
 
 
 class CanAddOwnReview(BasePermission):
+
     def has_permission(self, request, view):
 
         if request.method == "GET":
@@ -32,6 +33,7 @@ class CanAddOrUpdateReviewOnEnrolledCourseOnly(BasePermission):
             course_pk = request.data.get('course')
 
             if method == 'POST':
+
                 message = {
                     "course": "Cant add review in this course , you are not enrolled."}
 
@@ -59,8 +61,9 @@ class CanDeleteOwnReview(BasePermission):
 
 class ReviewViewSet(ModelViewSet):
 
-    permission_classes = [CanAddOwnReview,
-                          CanAddOrUpdateReviewOnEnrolledCourseOnly, CanDeleteOwnReview]
+    permission_classes = [(IsAuthenticated & CanAddOwnReview),
+                          (IsAuthenticated & CanAddOrUpdateReviewOnEnrolledCourseOnly),
+                          (IsAuthenticated & CanDeleteOwnReview)]
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
