@@ -11,6 +11,17 @@ class ReviewSerializer(ModelSerializer):
         model = Review
         fields = "__all__"
 
+    def create(self, validated_data):
+        user = self.context.get('request').user
+        course = validated_data.get('course')
+        try:
+            review = user.reviews.all().get(course=course)
+            return super().update(review, validated_data=validated_data)
+        except Review.DoesNotExist:
+            pass
+
+        return super().create(validated_data)
+
     def to_representation(self, instance):
         json = super().to_representation(instance)
         course = Course.objects.get(pk=json.get('course'))

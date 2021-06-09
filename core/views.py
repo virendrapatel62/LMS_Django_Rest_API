@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 # Create your views here.
 from rest_framework.reverse import reverse
+from review.models import Review
 
 
 @api_view(['GET'])
@@ -51,7 +52,7 @@ def api_root(request):
         },
         "Review": {
             "List": reverse("review:review-list", request=request),
-            "Detail": reverse("review:review-detail", request=request),
+            "Detail": reverse("review:review-detail", args=["PK"], request=request),
         }
 
 

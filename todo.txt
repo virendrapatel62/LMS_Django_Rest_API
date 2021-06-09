@@ -38,7 +38,5 @@
 ✅ Dont Serve All Data In One GO
 
 ⏳ Remove is Enrolled Field.
-⏳ BUg - http://localhost:8000/api/categories/01476ee6-d469-414a-822d-e868dd92b403/courses/
-⏳ BUg in Tag Serializer
 
-⏳ My Courses
+⌛ Chapter Update - Delete 

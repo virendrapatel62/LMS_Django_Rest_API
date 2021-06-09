@@ -6,7 +6,7 @@ from course.models import Course
 from chapter.serializers import ChapterSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView,  ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from chapter.models import Chapter, chapter_choises, chapter_choises_description, video_plateform_choises
 # Create your views here.
 from rest_framework import status
@@ -75,7 +75,11 @@ class ChapterCreateView(CreateAPIView):
         return serializer
 
 
-class ChapterDetailView(APIView):
+class ChapterDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Chapter.objects.all()
+    serializer_class = ChapterSerializer
+    permission_classes = [isAdminUserOrReadOnly]
+
     def get(self, request, **kargs):
         chapter_id = kargs.get('pk')
         user = request.user

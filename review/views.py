@@ -15,14 +15,14 @@ class CanAddOwnReview(BasePermission):
 
     def has_permission(self, request, view):
 
-        if request.method == "GET":
-            return True
+        if request.method == 'POST':
+            logged_in_user = str(request.user.pk)
+            body_user = request.data.get('user')
+            if logged_in_user != body_user:
+                raise ValidationError({"user": "User is not valid"})
+            return super().has_permission(request, view)
 
-        logged_in_user = str(request.user.pk)
-        body_user = request.data.get('user')
-        if logged_in_user != body_user:
-            raise ValidationError({"user": "User is not valid"})
-        return super().has_permission(request, view)
+        return True
 
 
 class CanAddOrUpdateReviewOnEnrolledCourseOnly(BasePermission):
