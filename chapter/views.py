@@ -1,19 +1,14 @@
-from re import sub
 from rest_framework.exceptions import ValidationError
-from rest_framework.serializers import Serializer
-from rest_framework.views import APIView
 from course.models import Course
 from chapter.serializers import ChapterSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, UpdateAPIView,  ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView,  ListAPIView, RetrieveUpdateDestroyAPIView
 from chapter.models import Chapter, chapter_choises, chapter_choises_description, video_plateform_choises
-# Create your views here.
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from core.permissions import isAdminUserOrReadOnly
 import uuid
-from order.models import Subscription
 
 
 @api_view(['GET'])
