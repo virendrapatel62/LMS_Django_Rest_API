@@ -1,4 +1,7 @@
 
+from math import exp
+from re import escape
+import traceback
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from chapter.models import Chapter, TextChapter, VideoChapter, LinkChapter, HeadingChapter
@@ -108,7 +111,27 @@ class ChapterSerializer(ModelSerializer):
         model = Chapter
         fields = '__all__'
 
+    def delete_chapter_type_data(self , chapter, ctypes_tobedelete):
+        for ctype_tobedelete in ctypes_tobedelete:
+            try:
+                if ctype_tobedelete == 'H':
+                    chapter.heading_chapter.delete()
+                if ctype_tobedelete == 'T':
+                    chapter.text_chapter.delete()
+                if ctype_tobedelete == 'V':
+                    chapter.video_chapter.delete()
+                if ctype_tobedelete == 'L':
+                    chapter.link_chapter.delete()
+            except:
+                traceback.print_exc()
+
+    def delete_chapter_data(self, instance, currentType):
+        types =  ['L', 'V', "T" , 'H']
+        to_be_delete_list  = list(filter(lambda type : currentType!=type , types ))
+        self.delete_chapter_type_data(instance, to_be_delete_list)
+
     def update(self, instance, validated_data):
+        chapter_type_before_update = instance.chapter_type
         chapter = super().update(instance, validated_data)
         print("Chapter", chapter)
         print("chapter_type_object NEW : ",
@@ -121,6 +144,10 @@ class ChapterSerializer(ModelSerializer):
               chapter_type_object_validated_data)
 
         chapter_type = chapter.chapter_type
+
+        if chapter_type != chapter_type_before_update:
+            self.delete_chapter_data(instance, chapter_type)
+            # delete preview chapter
 
         if(chapter_type == 'H'):
             try:
