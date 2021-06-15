@@ -1,6 +1,4 @@
 
-from math import exp
-from re import escape
 import traceback
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -111,7 +109,7 @@ class ChapterSerializer(ModelSerializer):
         model = Chapter
         fields = '__all__'
 
-    def delete_chapter_type_data(self , chapter, ctypes_tobedelete):
+    def delete_chapter_type_data(self, chapter, ctypes_tobedelete):
         for ctype_tobedelete in ctypes_tobedelete:
             try:
                 if ctype_tobedelete == 'H':
@@ -126,8 +124,9 @@ class ChapterSerializer(ModelSerializer):
                 traceback.print_exc()
 
     def delete_chapter_data(self, instance, currentType):
-        types =  ['L', 'V', "T" , 'H']
-        to_be_delete_list  = list(filter(lambda type : currentType!=type , types ))
+        types = ['L', 'V', "T", 'H']
+        to_be_delete_list = list(
+            filter(lambda type: currentType != type, types))
         self.delete_chapter_type_data(instance, to_be_delete_list)
 
     def update(self, instance, validated_data):
