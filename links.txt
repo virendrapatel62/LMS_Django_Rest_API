@@ -1,0 +1,19 @@
+Visit www.feelfreetocode.com
+
+Traveler Notes App With Map : https://www.feelfreetocode.com/s/store/courses/description/Traveler-Notes-App
+Express Js With Typescript : https://www.feelfreetocode.com/s/store/courses/description/API-with-Express-Using-Typescript-2021
+Django Tshirt Store : https://www.feelfreetocode.com/s/store/courses/description/Django-Tshirt-Store-With-Payment-Gateway
+Hospital Bed Availability Django Website : https://www.feelfreetocode.com/s/store/courses/description/Hospital-Bed-Availability-Website
+Node Js Express Js : https://www.feelfreetocode.com/s/store/courses/description/API-with-Express-Using-JS
+
+DjangoFlix Movie Ticket Booking Project :  https://www.youtube.com/watch?v=tOtvKti2ZvA&list=PLdBwVRHjcI__QpQG9NyfFByErtw9R2jQg
+
+Django Rest Framework : https://www.youtube.com/watch?v=z6tjgvx7K2M&list=PLdBwVRHjcI_845VqggPzu4up0I33o-YO2
+
+Django Online Course Project : https://www.youtube.com/watch?v=Z-8FMoSO0n0&list=PLdBwVRHjcI_9KLR8w5VpHtdAKxTtXB-SK
+
+Django Eshop : https://www.youtube.com/watch?v=APESx65wpBc&list=PLdBwVRHjcI__NWxctXUSLz1Gg2Mb-B-O-
+
+Angular Map my India : https://www.youtube.com/watch?v=Yb9p8aPJQYA&list=PLdBwVRHjcI_9UcBZj_ARvxx-6-OPF7R6Q
+
+Ajax With Django : https://www.youtube.com/playlist?list=PLdBwVRHjcI__oD6fZqJ55G_wE4MsOiLfS
