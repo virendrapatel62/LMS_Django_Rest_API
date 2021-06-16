@@ -53,6 +53,10 @@ def api_root(request):
         "Review": {
             "List": reverse("review:review-list", request=request),
             "Detail": reverse("review:review-detail", args=["PK"], request=request),
+        },
+        "Doubt": {
+            "List": reverse("doubt:doubt-list", request=request),
+            "Detail": reverse("doubt:doubt-detail", args=["PK"], request=request),
         }
 
 
