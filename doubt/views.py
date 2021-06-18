@@ -1,5 +1,5 @@
-from doubt.serializers import DoubtSerializer
-from doubt.models import Doubt
+from doubt.serializers import DoubtAnswerSerializer, DoubtSerializer
+from doubt.models import Doubt, DoubtAnswer
 from django.db.models.base import Model
 from django.shortcuts import render
 from rest_framework.decorators import api_view
@@ -33,3 +33,11 @@ class DoubtModelViewSet(ModelViewSet):
                           CanDeleteAndUpdateOnlyOwnDoubt]
     queryset = Doubt.objects.all()
     serializer_class = DoubtSerializer
+    filterset_fields = "__all__"
+
+
+class DoubtAnswerModelViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = DoubtAnswer.objects.all()
+    serializer_class = DoubtAnswerSerializer
+    filterset_fields = "__all__"

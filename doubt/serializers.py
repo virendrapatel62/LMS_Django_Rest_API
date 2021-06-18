@@ -20,6 +20,14 @@ class DoubtSerializer(ModelSerializer):
 
 
 class DoubtAnswerSerializer(ModelSerializer):
+    user = UserSerializer(many=False, read_only=True)
+
     class Meta:
         model = DoubtAnswer
         fields = '__all__'
+
+    def validate(self, attrs):
+        validated_data = super().validate(attrs)
+        request = self.context['request']
+        validated_data['user'] = request.user
+        return validated_data
