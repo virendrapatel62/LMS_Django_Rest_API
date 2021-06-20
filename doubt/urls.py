@@ -11,10 +11,8 @@ doubtRouter = DefaultRouter()
 
 doubtRouter.register(
     "answers", DoubtAnswerModelViewSet, basename='doubt-answer')
-    
+
 doubtRouter.register("", DoubtModelViewSet, basename='doubt')
 
-
 urlpatterns = []
-
 urlpatterns += doubtRouter.urls
