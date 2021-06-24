@@ -4,6 +4,13 @@ from django.contrib import admin
 from django.urls import path, include
 from core.views import api_root
 from order.urls import Orderurls, subscriptionUrls
+
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView
+)
 urlpatterns = [
 
     path('admin/', admin.site.urls),
@@ -20,4 +27,9 @@ urlpatterns = [
          include((subscriptionUrls, 'order'), namespace='subscription')),
     path('api/reviews/', include(('review.urls', 'review'), namespace='review')),
 
+
+    # authentication Token Views
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]

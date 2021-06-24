@@ -11,7 +11,11 @@ from review.models import Review
 def api_root(request):
     response = {
         "API Root": reverse('api_root', request=request),
-
+        "Auth Tokne": {
+            "Access Token": reverse('token_obtain_pair', request=request),
+            "Token Refresh": reverse('token_refresh', request=request),
+            "Token Verify": reverse('token_verify', request=request),
+        },
         "Course": {
             "Course List": reverse('course:course-list', request=request),
             "Course Detail": reverse('course:course-detail', args=[1], request=request),
