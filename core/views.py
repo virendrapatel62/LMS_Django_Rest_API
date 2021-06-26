@@ -5,6 +5,11 @@ from rest_framework.decorators import api_view
 # Create your views here.
 from rest_framework.reverse import reverse
 from review.models import Review
+from rest_framework_simplejwt.views import TokenObtainPairView
+from core.serializers import MyTokenObtainPairSerializer
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 
 @api_view(['GET'])
@@ -66,3 +71,5 @@ def api_root(request):
 
     }
     return Response(response)
+
+
