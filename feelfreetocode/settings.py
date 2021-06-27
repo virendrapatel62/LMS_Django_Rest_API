@@ -2,6 +2,21 @@
 
 from pathlib import Path
 from datetime import time, timedelta
+from os import getenv
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_NAME = getenv("DB_NAME")
+DB_PORT = getenv("DB_PORT")
+DB_HOST = getenv("DB_HOST")
+DB_USER = getenv("DB_USER")
+DB_PASSWORD = getenv("DB_PASSWORD")
+IS_PRODUCTION = bool(getenv("IS_PRODUCTION", False))
+APP_HOST = getenv('APP_HOST', 'localhost')
+
+PAGE_SIZE = int(getenv("PAGE_SIZE", 10))
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=j6!^gj$w)oxbzi2i#!$sh7y4zqzfo1804o7j60(5vkyoks4n!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not IS_PRODUCTION
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [APP_HOST]
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1)
 }
@@ -49,14 +64,12 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
-
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': PAGE_SIZE
 }
 
 
@@ -94,6 +107,7 @@ WSGI_APPLICATION = 'feelfreetocode.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
@@ -102,11 +116,11 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'feelfreetocode',
-        'PORT': 3306,
-        'HOST': 'localhost',
-        "USER": 'root',
-        "PASSWORD": 'root'
+        'NAME': DB_NAME,
+        'PORT': DB_PORT,
+        'HOST': DB_HOST,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD
     }
 }
 
