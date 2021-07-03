@@ -12,9 +12,12 @@ DB_PORT = getenv("DB_PORT")
 DB_HOST = getenv("DB_HOST")
 DB_USER = getenv("DB_USER")
 DB_PASSWORD = getenv("DB_PASSWORD")
-IS_PRODUCTION = bool(getenv("IS_PRODUCTION", False))
-APP_HOST = getenv('APP_HOST', 'localhost')
 
+IS_PRODUCTION = False
+if getenv("IS_PRODUCTION") == 'True':
+    IS_PRODUCTION = True
+
+APP_HOST = getenv('APP_HOST', 'localhost')
 PAGE_SIZE = int(getenv("PAGE_SIZE", 10))
 
 
@@ -30,6 +33,8 @@ SECRET_KEY = 'django-insecure-=j6!^gj$w)oxbzi2i#!$sh7y4zqzfo1804o7j60(5vkyoks4n!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not IS_PRODUCTION
+
+print(DEBUG)
 
 ALLOWED_HOSTS = [APP_HOST]
 SIMPLE_JWT = {
