@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 DB_NAME = getenv("DB_NAME")
 DB_PORT = getenv("DB_PORT")
 DB_HOST = getenv("DB_HOST")
