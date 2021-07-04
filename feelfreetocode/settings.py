@@ -3,6 +3,7 @@
 from pathlib import Path
 from datetime import time, timedelta
 from os import getenv
+from django.db.models.manager import BaseManager
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -34,7 +35,6 @@ SECRET_KEY = 'django-insecure-=j6!^gj$w)oxbzi2i#!$sh7y4zqzfo1804o7j60(5vkyoks4n!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not IS_PRODUCTION
 
-print(DEBUG)
 
 ALLOWED_HOSTS = [APP_HOST]
 SIMPLE_JWT = {
@@ -167,6 +167,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/files/'
+MEDIA_ROOT = BASE_DIR/"files"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
