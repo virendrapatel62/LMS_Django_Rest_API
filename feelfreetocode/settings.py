@@ -6,6 +6,7 @@ from os import getenv
 from django.db.models.manager import BaseManager
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 DB_NAME = getenv("DB_NAME")
@@ -49,10 +50,12 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'storages',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
     'rest_framework',
+
     'django_filters',
     'core',
     'course',
@@ -167,10 +170,27 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
 MEDIA_URL = '/files/'
 MEDIA_ROOT = BASE_DIR/"files"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# AWS KEYS
+
+AWS_ACCESS_KEY_ID = getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY")
+AWS_S3_REGION_NAME = getenv("AWS_S3_REGION_NAME")
+AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+STATICFILES_STORAGE = 'feelfreetocode.custom_storage.StaticFilesStorage'
+DEFAULT_FILE_STORAGE = 'feelfreetocode.custom_storage.MediaFilesStorage'
+
+
+MEDIA_FILES_LOCATION = 'uploaded-files'
+STATIC_FILES_LOCATION = 'static-files'
