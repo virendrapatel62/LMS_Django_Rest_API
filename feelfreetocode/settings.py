@@ -11,16 +11,30 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR/".env")
 
-
-DB_NAME = getenv("DB_NAME")
-DB_PORT = getenv("DB_PORT")
-DB_HOST = getenv("DB_HOST")
-DB_USER = getenv("DB_USER")
-DB_PASSWORD = getenv("DB_PASSWORD")
-
 IS_PRODUCTION = False
-if getenv("IS_PRODUCTION") == 'True':
+if getenv("IS_PRODUCTION") in ['True', 'true']:
     IS_PRODUCTION = True
+
+
+USE_AWS_S3 = False
+if getenv("USE_AWS_S3") in ['True', 'true']:
+    USE_AWS_S3 = True
+
+USE_SQLITE = False
+if getenv("USE_SQLITE") in ['True', 'true']:
+    USE_SQLITE = True
+    SQLITE_FILENAME = getenv("SQLITE_FILENAME", "db.sqlite3")
+
+
+USE_MYSQL = False
+if getenv("USE_MYSQL") in ['True', 'true']:
+    USE_MYSQL = True
+    DB_NAME = getenv("DB_NAME")
+    DB_PORT = getenv("DB_PORT")
+    DB_HOST = getenv("DB_HOST")
+    DB_USER = getenv("DB_USER")
+    DB_PASSWORD = getenv("DB_PASSWORD")
+
 
 APP_HOST = getenv('APP_HOST', 'localhost')
 PAGE_SIZE = int(getenv("PAGE_SIZE", 10))
@@ -114,14 +128,20 @@ WSGI_APPLICATION = 'feelfreetocode.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+database_setup = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': str(BASE_DIR / 'db.sqlite3'),
+}
 
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+if USE_SQLITE:
+    database_setup = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(BASE_DIR / SQLITE_FILENAME),
+    }
 
-    'default': {
+
+if USE_MYSQL:
+    database_setup = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': DB_NAME,
         'PORT': DB_PORT,
@@ -129,9 +149,11 @@ DATABASES = {
         "USER": DB_USER,
         "PASSWORD": DB_PASSWORD
     }
+
+
+DATABASES = {
+    'default': database_setup
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -182,14 +204,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AWS KEYS
 
-AWS_ACCESS_KEY_ID = getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY")
-AWS_S3_REGION_NAME = getenv("AWS_S3_REGION_NAME")
-AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-STATICFILES_STORAGE = 'feelfreetocode.custom_storage.StaticFilesStorage'
-DEFAULT_FILE_STORAGE = 'feelfreetocode.custom_storage.MediaFilesStorage'
+if USE_AWS_S3:
+    AWS_ACCESS_KEY_ID = getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_S3_REGION_NAME = getenv("AWS_S3_REGION_NAME")
+    AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    STATICFILES_STORAGE = 'feelfreetocode.custom_storage.StaticFilesStorage'
+    DEFAULT_FILE_STORAGE = 'feelfreetocode.custom_storage.MediaFilesStorage'
 
-
-MEDIA_FILES_LOCATION = 'uploaded-files'
-STATIC_FILES_LOCATION = 'static-files'
+    MEDIA_FILES_LOCATION = 'uploaded-files'
+    STATIC_FILES_LOCATION = 'static-files'
